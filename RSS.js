@@ -32,32 +32,34 @@ function articleRead(evt) {
 }
 
 function tileCreate(x) {
-  const Article = document.createElement("div")
-  Article.className = "article"
-  const Link = document.createElement("a") 
-  Link.target = "_blank"
-  Link.href = obj[x].link
-  const Image = document.createElement("img") 
-  Image.src = obj[x].image
-  Image.className = "article_image"
-  const Title = document.createElement("div") 
-  Title.className = "article_title"
-  const titleText = document.createTextNode(obj[x].title)
-  const Feed = document.createElement("div") 
-  Feed.className = "article_feed"
-  const feedText = document.createTextNode(obj[x].feed)
-  const Time = document.createElement("div") 
-  Time.className = "article_time"
-  const timeText = document.createTextNode("6m")
-  Title.appendChild(titleText)
-  Feed.appendChild(feedText)
-  Time.appendChild(timeText)
-  Link.appendChild(Image)
-  Link.appendChild(Title)
-  Article.appendChild(Link)
-  Article.appendChild(Feed)
-  Article.appendChild(Time)
-  document.getElementById("insertion").appendChild(Article)
+  x.forEach(({title,feed,link,image}) => {
+    const Article = document.createElement("div")
+    Article.className = "article"
+    const Link = document.createElement("a") 
+    Link.target = "_blank"
+    Link.href = link
+    const Image = document.createElement("img") 
+    Image.src = image
+    Image.className = "article_image"
+    const Title = document.createElement("div") 
+    Title.className = "article_title"
+    const titleText = document.createTextNode(title)
+    const Feed = document.createElement("div") 
+    Feed.className = "article_feed"
+    const feedText = document.createTextNode(feed)
+    const Time = document.createElement("div") 
+    Time.className = "article_time"
+    const timeText = document.createTextNode("6m") //fix - to be edited to actually do calculations
+    Title.appendChild(titleText)
+    Feed.appendChild(feedText)
+    Time.appendChild(timeText)
+    Link.appendChild(Image)
+    Link.appendChild(Title)
+    Article.appendChild(Link)
+    Article.appendChild(Feed)
+    Article.appendChild(Time)
+    document.getElementById("insertion").appendChild(Article)
+  })
 }
 
 function populateMenus() {
@@ -112,9 +114,8 @@ function getCategoryPage(evt) {
     } else {
       document.getElementById("insertion").time = obj[0].added
     }
-    for (x in obj) {
-      tileCreate(x)
-    }
+    cards = Math.min(obj.length,60)
+    tileCreate(obj.slice(0,cards))
     populateMenus()
   }
 }
@@ -127,8 +128,17 @@ populateMenus()
 
 document.getElementById("default").click();
 
+function scroller() {
+  element = document.getElementById("insertion");
+  if (element.scrollHeight - element.scrollTop < element.clientHeight + 600) {
+    z = cards
+    cards = Math.min(obj.length,z+60)
+    tileCreate(obj.slice(z,cards))
+  }
 
+}
 
+document.getElementById("insertion").onscroll = function() {scroller()};
 
 
 
