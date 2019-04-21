@@ -20,13 +20,13 @@ function articleRead(evt) {
   if (event.which != 3) {
     if ((event.target.className == "article_feed") || (event.target.className == "article_time")) {
       ajaxCall("POST","4",event.target.parentElement.childNodes[0].href);
-      event.target.parentElement.style.opacity = 0.25
+      event.target.parentElement.style.opacity = 1 / (4 * event.target.parentElement.style.opacity)
     } else if ((event.target.className == "article_title") || (event.target.className == "article_image")) {
       ajaxCall("POST","4",event.target.parentElement.href);
-      event.target.parentElement.parentElement.style.opacity = 0.25
+      event.target.parentElement.parentElement.style.opacity = 1 / (4 * event.target.parentElement.parentElement.style.opacity)
     } else if (event.target.className == "article") {
       ajaxCall("POST","4",event.target.childNodes[0].href);
-      event.target.style.opacity = 0.25
+      event.target.style.opacity = 1 / (4 * event.target.style.opacity)
     } 
   }
 }
@@ -35,6 +35,7 @@ function tileCreate(x) {
   x.forEach(({title,feed,link,image}) => {
     const Article = document.createElement("div")
     Article.className = "article"
+    Article.style.opacity = 1;
     const Link = document.createElement("a") 
     Link.target = "_blank"
     Link.href = link
