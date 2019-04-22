@@ -14,6 +14,9 @@ function sectionRead() {
   const feed = document.getElementById("insertion").feed
   const time = document.getElementById("insertion").time //used to make sure new articles are not marked as read before 
   ajaxCall("POST","5",category,feed,time);
+  Array.from(document.getElementsByClassName("article")).forEach(({style}) => {
+    style.opacity = 0.25
+  })
 }
 
 function articleRead(evt) {
