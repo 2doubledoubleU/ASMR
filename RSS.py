@@ -7,15 +7,16 @@ import feedparser
 import re
 import time
 import datetime
+import html
 
 def get_image(source): 
-	ffs = re.search('src="(http(s)?://.*?)"', source.summary)
+	backup = re.search('src="(http(s)?://.*?)"', source.summary)
 	if "media_thumbnail" in source:
 		return source["media_thumbnail"][0]["url"]
 	elif "media_content" in source:
 		return source["media_content"][0]["url"]
-	elif ffs:
-		return ffs.group(1)
+	elif backup:
+		return html.unescape(backup.group(1))
 	else:
 		return "noImage.png"
 		#add proper image for when feed has no image

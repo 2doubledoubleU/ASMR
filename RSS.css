@@ -26,7 +26,8 @@ body
   right: 0px;
   background-color: #101015;
   height: 100vh;  
-  overflow-y: scroll;
+  overflow-y: auto;
+  scrollbar-width: none;
   position: absolute;
   top: 0px;
   text-align: center;
@@ -104,6 +105,9 @@ li {
   max-width: 200px;
   min-width: 100px;
   z-index: 1;
+  max-height: 800px;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .dropdown-content a {
