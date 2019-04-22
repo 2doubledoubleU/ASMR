@@ -1,3 +1,19 @@
+function timeSince(t) {
+  mills = new Date()-Date.parse(t)
+  d = new Date(t)
+  if (mills < 0) {
+    return "error"
+  } else if (mills < 864e5) {
+    return d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2)
+  } else if (mills < 1728e5) {
+    return "yesterday"
+  } else if (mills < 9504e5) {
+    return Math.floor(mills/864e5) + "d"    
+  } else {
+    return 1900+d.getYear() + "-" + ("0" + (d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2)
+  }
+}
+
 function ajaxCall(type, ...inputs) {
   const http = new XMLHttpRequest();
   const form_data = new FormData();
@@ -12,7 +28,7 @@ function ajaxCall(type, ...inputs) {
 function sectionRead() {
   const category = document.getElementById("insertion").category 
   const feed = document.getElementById("insertion").feed
-  const time = document.getElementById("insertion").time //used to make sure new articles are not marked as read before 
+  const time = document.getElementById("insertion").time //used to make sure new articles are not marked as read before shown 
   ajaxCall("POST","5",category,feed,time);
   Array.from(document.getElementsByClassName("article")).forEach(({style}) => {
     style.opacity = 0.25
@@ -35,7 +51,7 @@ function articleRead(evt) {
 }
 
 function tileCreate(x) {
-  x.forEach(({title,feed,link,image}) => {
+  x.forEach(({title,feed,link,image,added}) => {
     const Article = document.createElement("div")
     Article.className = "article"
     Article.style.opacity = 1;
@@ -53,7 +69,7 @@ function tileCreate(x) {
     const feedText = document.createTextNode(feed)
     const Time = document.createElement("div") 
     Time.className = "article_time"
-    const timeText = document.createTextNode("6m") //fix - to be edited to actually do calculations
+    const timeText = document.createTextNode(timeSince(added))
     Title.appendChild(titleText)
     Feed.appendChild(feedText)
     Time.appendChild(timeText)
