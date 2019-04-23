@@ -38,7 +38,7 @@ function sectionRead() {
 }
 
 function toggler() {
-  scope = (scope + 1) % 3
+  scope = (scope + 1) % 2
   populateMenus()
   document.getElementById("default").click();
 }
