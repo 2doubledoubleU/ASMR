@@ -1,3 +1,5 @@
+let scope = 0
+
 function timeSince(t) {
   mills = new Date()-Date.parse(t)
   d = new Date(t)
@@ -33,6 +35,12 @@ function sectionRead() {
   Array.from(document.getElementsByClassName("article")).forEach(({style}) => {
     style.opacity = 0.25
   })
+}
+
+function toggler() {
+  scope = (scope + 1) % 3
+  populateMenus()
+  document.getElementById("default").click();
 }
 
 function articleRead(evt) {
@@ -83,8 +91,8 @@ function tileCreate(x) {
 }
 
 function populateMenus() {
-  const menus = ajaxCall("POST","1");
-  const subMenus = ajaxCall("POST","2");
+  const menus = ajaxCall("POST","1",scope);
+  const subMenus = ajaxCall("POST","2",scope);
   
   const allButton = document.createElement("li")
   allButton.category = ''
@@ -125,7 +133,7 @@ function populateMenus() {
 
 function getCategoryPage(evt) {
   if (event.target.id != "top_bar") {
-    obj = ajaxCall("POST","3",event.target.category,event.target.feed);
+    obj = ajaxCall("POST","3",scope,event.target.category,event.target.feed);
     document.getElementById("insertion").innerHTML = ''
     document.getElementById("insertion").category = event.target.category
     document.getElementById("insertion").feed = event.target.feed
