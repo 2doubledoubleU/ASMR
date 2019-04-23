@@ -38,23 +38,23 @@ function sectionRead() {
 function articleRead(evt) {
   if (event.which != 3) {
     if ((event.target.className == "article_feed") || (event.target.className == "article_time")) {
-      ajaxCall("POST","4",event.target.parentElement.childNodes[0].href);
-      event.target.parentElement.style.opacity = 1 / (4 * event.target.parentElement.style.opacity)
+      ajaxCall("POST","4",event.target.parentElement.childNodes[0].href,4*(event.target.parentElement.style.opacity-0.25)/3); //mark as read (1) or unread (0) based on opacity
+      event.target.parentElement.style.opacity = 1 / (4 * event.target.parentElement.style.opacity) //flip opacity between 0.25 and 1
     } else if ((event.target.className == "article_title") || (event.target.className == "article_image")) {
-      ajaxCall("POST","4",event.target.parentElement.href);
+      ajaxCall("POST","4",event.target.parentElement.href,4 * (event.target.parentElement.parentElement.style.opacity-0.25)/3);
       event.target.parentElement.parentElement.style.opacity = 1 / (4 * event.target.parentElement.parentElement.style.opacity)
     } else if (event.target.className == "article") {
-      ajaxCall("POST","4",event.target.childNodes[0].href);
+      ajaxCall("POST","4",event.target.childNodes[0].href,4*(event.target.style.opacity-0.25)/3);
       event.target.style.opacity = 1 / (4 * event.target.style.opacity)
     } 
   }
 }
 
 function tileCreate(x) {
-  x.forEach(({title,feed,link,image,added}) => {
+  x.forEach(({title,feed,link,image,added,read}) => {
     const Article = document.createElement("div")
     Article.className = "article"
-    Article.style.opacity = 1;
+    Article.style.opacity = 1 - read*0.75;
     const Link = document.createElement("a") 
     Link.target = "_blank"
     Link.href = link

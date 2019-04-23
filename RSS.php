@@ -22,8 +22,9 @@ switch($var1[0]) {
 		}
 		break;
 	case 4:
-		$sth = $PDO->prepare('UPDATE article_entries SET read= NOT read WHERE link=?');
-		$sth->bindParam(1, $var1[1], PDO::PARAM_STR);
+		$sth = $PDO->prepare('UPDATE article_entries SET read=? WHERE link=?');
+		$sth->bindParam(1, $var1[2], PDO::PARAM_STR);
+		$sth->bindParam(2, $var1[1], PDO::PARAM_STR);
 		break;
 	case 5:
 		if (empty($var1[1])) {
