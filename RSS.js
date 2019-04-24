@@ -68,6 +68,10 @@ function tileCreate(x) {
     Link.href = link
     const Image = document.createElement("img") 
     Image.src = image
+    Image.onerror = function () {
+      this.onerror=null;
+      this.src='noImage.png';
+    }
     Image.className = "article_image"
     const Title = document.createElement("div") 
     Title.className = "article_title"

@@ -130,3 +130,8 @@ li:hover .dropdown-content {
 .dropdown-content a:hover {
   background-color: #808090;
 }
+
+.side_button {
+  width: 45px;
+  height: 45px;
+}
