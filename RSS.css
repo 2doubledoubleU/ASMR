@@ -17,11 +17,11 @@ body
 #side_bar {
     height: 100vh;
     background-color: #202025;
-    width: 45px;
+    width: 60px;
 }
 
 #insertion {
-  left: 45px;
+  left: 60px;
   width: auto;
   right: 0px;
   background-color: #101015;
@@ -132,6 +132,54 @@ li:hover .dropdown-content {
 }
 
 .side_button {
-  width: 45px;
-  height: 45px;
+  width: 60px;
+  height: 60px;
+  color: white;
+  background-color: inherit;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid #101015;
+}
+
+.side_button:hover {
+  background-color: #808090;
+}
+
+#blocker {
+  position:absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.9;
+  z-index: 2;
+  background-color: #101015;
+  display: none;
+}
+
+#popup {
+  position:absolute;
+  top:30%;
+  left:50%;
+  width:800px;  
+  height:600px;
+  margin-left:-400px;   
+  margin-top:-200px;
+  opacity: 1;
+  z-index: 3;
+  background-color: #303040;
+  display: none;
+}
+
+#exit_popup {
+  color: #808090;
+  font-weight: bold;
+  font-size: 22px;
+  position: absolute;
+  padding-top: 8px;
+  padding-right: 12px;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
 }

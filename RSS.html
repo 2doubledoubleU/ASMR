@@ -9,12 +9,17 @@
 <body>
         <div id="top_bar">
         </div>
+
+        <div id="blocker"></div>
+        <div id="popup">
+            <div id="exit_popup" onclick="closeModder()">X</div>
+        </div>
             
         <div id="bottom_screen">
             <div id="side_bar">
-                <button class="side_button" onclick="sectionRead()">R</button> <!--fix - make pretty possibly align bottom add proper click listener in JS-->
-                <button class="side_button" onclick="toggler()">T</button>
-                <button class="side_button" onclick="adder()">+</button>
+                <button class="side_button" title="Mark All Read" onclick="sectionRead()">R</button> <!--fix - make pretty possibly align bottom add proper click listener in JS-->
+                <button class="side_button" title="Toggle Unread/All" onclick="toggler()">T</button>
+                <button class="side_button" title="Modify RSS Feeds" onclick="modder()">✚</button>
             </div>
 
             <div id="insertion">

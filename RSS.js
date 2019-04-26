@@ -16,6 +16,16 @@ function timeSince(t) {
   }
 }
 
+function modder() {
+  document.getElementById("popup").style.display = "block"
+  document.getElementById("blocker").style.display = "block"
+}
+
+function closeModder() {
+  document.getElementById("popup").style.display = "none"
+  document.getElementById("blocker").style.display = "none"
+}
+
 function ajaxCall(type, ...inputs) {
   const http = new XMLHttpRequest();
   const form_data = new FormData();
