@@ -45,6 +45,7 @@ function sectionRead() {
   Array.from(document.getElementsByClassName("article")).forEach(({style}) => {
     style.opacity = 0.25
   })
+  populateMenus()
 }
 
 function toggler() {
@@ -64,7 +65,8 @@ function articleRead(evt) {
     } else if (event.target.className == "article") {
       ajaxCall("POST","4",event.target.childNodes[0].href,4*(event.target.style.opacity-0.25)/3);
       event.target.style.opacity = 1 / (4 * event.target.style.opacity)
-    } 
+    }
+    populateMenus() 
   }
 }
 
@@ -143,6 +145,8 @@ function populateMenus() {
     document.getElementById(category).appendChild(subMenuLink) 
   })
 
+  menu_count = ajaxCall("POST","3",0,'','').length
+
 }
 
 function getCategoryPage(evt) {
@@ -158,6 +162,8 @@ function getCategoryPage(evt) {
     }
     cards = Math.min(obj.length,60)
     tileCreate(obj.slice(0,cards))
+    document.title = "RSS Reader"
+    document.getElementById("updater").style.display = "none"
     populateMenus()
   }
 }
@@ -182,13 +188,22 @@ function scroller() {
 
 document.getElementById("insertion").onscroll = function() {scroller()};
 
+function checker() {
+  if (ajaxCall("POST","3",0,'','').length > menu_count) {
+    document.getElementById("updater").style.display = "block"
+    document.title = "RSS Reader (" + (ajaxCall("POST","3",0,'','').length - menu_count) + ")"
+  }
+}
 
+function updater() {
+  obj = ajaxCall("POST","3",0,document.getElementById("insertion").category,document.getElementById("insertion").feed);
+  document.getElementById("insertion").innerHTML = ''
+  document.getElementById("insertion").time = obj[0].added
+  cards = Math.min(obj.length,60)
+  tileCreate(obj.slice(0,cards))
+  populateMenus()
+  document.getElementById("updater").style.display = "none"
+  document.title = "RSS Reader"
+}
 
-
-
-
-
-
-
-
-
+var t=setInterval(checker,10000);
