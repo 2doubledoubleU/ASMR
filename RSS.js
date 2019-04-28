@@ -17,7 +17,7 @@ function timeSince(t) {
 }
 
 function modder() {
-  document.getElementById("popup").style.display = "block"
+  document.getElementById("popup").style.display = "flex"
   document.getElementById("blocker").style.display = "block"
 }
 
@@ -204,6 +204,28 @@ function updater() {
   populateMenus()
   document.getElementById("updater").style.display = "none"
   document.title = "RSS Reader"
+}
+
+function showMod() {
+  const cats = ajaxCall("POST","6");
+  const tblBody = document.createElement("tbody");
+  cats.forEach(({feed_name,category,feed}) => {
+    const row = document.createElement("tr");
+    const fn = document.createElement("td");
+    const c = document.createElement("td");
+    const f = document.createElement("td");
+    const fnText = document.createTextNode(feed_name);
+    const cText = document.createTextNode(category);
+    const fText = document.createTextNode(feed);
+    fn.appendChild(fnText);
+    c.appendChild(cText);
+    f.appendChild(fText);
+    row.appendChild(fn);
+    row.appendChild(c);
+    row.appendChild(f);
+    tblBody.appendChild(row);
+  })
+  document.getElementById("popup_display").appendChild(tblBody)
 }
 
 var t=setInterval(checker,10000);

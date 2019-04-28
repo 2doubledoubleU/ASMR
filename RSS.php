@@ -60,6 +60,9 @@ switch($var1[0]) {
 			$sth->bindParam(2, $var1[3], PDO::PARAM_STR);
 		}
 		break;
+	case 6:
+		$sth = $PDO->prepare('SELECT feed_name, category, feed FROM feeds ORDER BY feed_name');
+		break;
 }
 
 $sth->execute();
