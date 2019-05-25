@@ -13,9 +13,9 @@ switch($var1[0]) {
 		break;
 	case 2:
 		if ($var1[1] == 1) {
-			$sth = $PDO->prepare('SELECT feed, category, count(uid) as amount FROM article_entries GROUP BY feed');
+			$sth = $PDO->prepare('SELECT feed, category, count(uid) as amount FROM article_entries GROUP BY feed, category');
 		} else {
-			$sth = $PDO->prepare('SELECT feed, category, count(uid) as amount FROM article_entries where read="0" GROUP BY feed');
+			$sth = $PDO->prepare('SELECT feed, category, count(uid) as amount FROM article_entries where read="0" GROUP BY feed, category');
 		}
 		break;
 	case 3:
@@ -26,8 +26,9 @@ switch($var1[0]) {
 				$sth = $PDO->prepare('SELECT * FROM article_entries where category=? order by added DESC');
 				$sth->bindParam(1, $var1[2], PDO::PARAM_STR);
 			} else {
-				$sth = $PDO->prepare('SELECT * FROM article_entries where feed=? order by added DESC');
+				$sth = $PDO->prepare('SELECT * FROM article_entries where feed=? and category=? order by added DESC');
 				$sth->bindParam(1, $var1[3], PDO::PARAM_STR);
+				$sth->bindParam(2, $var1[2], PDO::PARAM_STR);
 			}
 		} else {
 			if (empty($var1[2])) {
