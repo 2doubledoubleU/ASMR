@@ -5,6 +5,10 @@ body
     overflow: hidden;
 }
 
+tbody {
+  border-spacing: 150px;
+}
+
 #top_bar {
     background-color: #303040;
     text-align: center;
@@ -137,6 +141,10 @@ li {
   scrollbar-width: none;
 }
 
+a {
+  color:inherit;
+}
+
 .dropdown-content a {
   cursor: pointer;
   font-size: 14px;  
@@ -164,7 +172,7 @@ li:hover .dropdown-content {
   color: white;
   background-color: inherit;
   cursor: pointer;
-  font-weight: bold;
+  font-size: 28px;
   border: none;
   border-bottom: 2px solid #101015;
 }
@@ -214,4 +222,8 @@ li:hover .dropdown-content {
 
 #updater {
   display: none;
+}
+
+tr td[title] {
+  cursor: pointer;
 }

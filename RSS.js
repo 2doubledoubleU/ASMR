@@ -19,6 +19,7 @@ function timeSince(t) {
 function modder() {
   document.getElementById("popup").style.display = "flex"
   document.getElementById("blocker").style.display = "block"
+  showMod()
 }
 
 function closeModder() {
@@ -168,6 +169,22 @@ function getCategoryPage(evt) {
   }
 }
 
+function editor(evt) {
+  if (event.target.title == "Edit This Feed") {
+    alert("edit me")
+  } else if (event.target.title == "Remove This Feed") {
+    confirmation = window.confirm("Are you certain you wish to delete this feed?");
+    if (confirmation) {
+      obj = ajaxCall("POST","7",event.target.parentElement.feed_name,event.target.parentElement.category,event.target.parentElement.feed);
+      showMod()
+    }
+  } else if (event.target.title == "Add New Feed") {
+    obj = ajaxCall("POST","8",document.getElementById("new_name_data").value,document.getElementById("new_cat_data").value,document.getElementById("new_feed_data").value);
+    showMod()
+    alert("Feed Added")
+  }
+}
+
 document.getElementById("top_bar").addEventListener('click', () => getCategoryPage(event))
 
 document.getElementById("insertion").addEventListener('mouseup', () => articleRead(event))
@@ -207,25 +224,64 @@ function updater() {
 }
 
 function showMod() {
+  document.getElementById("popup_display").innerHTML = ""
   const cats = ajaxCall("POST","6");
-  const tblBody = document.createElement("tbody");
+  const table = document.createElement("table");
+
+  const row = table.insertRow();
+  new_name = document.createElement('input')
+  new_name.id = "new_name_data"
+  new_name.placeholder = "Add"
+  new_cat = document.createElement('input')
+  new_cat.id = "new_cat_data"
+  new_cat.placeholder = "New"
+  new_feed = document.createElement('input')
+  new_feed.id = "new_feed_data"
+  new_feed.placeholder = "Feed"
+  row.insertCell().appendChild(new_name);
+  row.insertCell().appendChild(new_cat);
+  row.insertCell().appendChild(new_feed);
+
+  save = document.createTextNode('\uD83D\uDCBE')
+  const flop = row.insertCell()
+  flop.appendChild(save);
+  flop.setAttribute('title', "Add New Feed");
+
   cats.forEach(({feed_name,category,feed}) => {
-    const row = document.createElement("tr");
-    const fn = document.createElement("td");
-    const c = document.createElement("td");
-    const f = document.createElement("td");
-    const fnText = document.createTextNode(feed_name);
-    const cText = document.createTextNode(category);
-    const fText = document.createTextNode(feed);
-    fn.appendChild(fnText);
-    c.appendChild(cText);
-    f.appendChild(fText);
-    row.appendChild(fn);
-    row.appendChild(c);
-    row.appendChild(f);
-    tblBody.appendChild(row);
+    const row = table.insertRow();
+    row.feed_name = feed_name
+    row.category = category
+    row.feed = feed
+    row.insertCell().appendChild(document.createTextNode(feed_name));
+    row.insertCell().appendChild(document.createTextNode(category));
+    feedLink = document.createElement('a')
+    feedLink.target = '_blank'
+    feedLink.href = feed
+    feedLink.appendChild(document.createTextNode(feed))
+    row.insertCell().appendChild(feedLink);
+    
+    //edits = document.createTextNode('\u270E')
+    //const pen = row.insertCell()
+    //pen.appendChild(edits);
+    //pen.setAttribute('title', "Edit This Feed");
+
+    deletes = document.createTextNode('\u274C')
+    const cross = row.insertCell()
+    cross.appendChild(deletes)
+    cross.setAttribute('title', "Remove This Feed")
   })
-  document.getElementById("popup_display").appendChild(tblBody)
+  const thead = table.createTHead();
+  const trow = thead.insertRow();
+  ["Feed Name","Category","Link"].forEach((value) => {
+    const th = document.createElement("th");
+    let text = document.createTextNode(value);
+    th.appendChild(text);
+    trow.appendChild(th);
+  })
+
+  document.getElementById("popup_display").appendChild(table)
 }
+
+document.getElementById("popup_display").addEventListener('mouseup', () => editor(event))
 
 var t=setInterval(checker,10000);
