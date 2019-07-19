@@ -44,8 +44,8 @@ switch($var1[0]) {
 		}
 		break;
 	case 4:
-		$sth = $PDO->prepare('UPDATE article_entries SET read=? WHERE link=?');
-		$sth->bindParam(1, $var1[2], PDO::PARAM_STR);
+		$sth = $PDO->prepare('UPDATE article_entries SET read=? WHERE link=?'); 
+		$sth->bindParam(1, $var1[2], PDO::PARAM_STR); 
 		$sth->bindParam(2, $var1[1], PDO::PARAM_STR);
 		break;
 	case 5:
@@ -73,7 +73,7 @@ switch($var1[0]) {
 		$sth->bindParam(3, $var1[3], PDO::PARAM_STR);
 		break;
 	case 8:
-		$sth = $PDO->prepare('INSERT INTO feeds (feed_name, category, feed, feed_id, valid) VALUES (?,?,?,(SELECT MAX(feed_id) + 1 FROM feeds),1) ');
+		$sth = $PDO->prepare('INSERT INTO feeds (feed_name, category, feed, valid) VALUES (?,?,?,1) ');
 		$sth->bindParam(1, $var1[1], PDO::PARAM_STR);
 		$sth->bindParam(2, $var1[2], PDO::PARAM_STR);
 		$sth->bindParam(3, $var1[3], PDO::PARAM_STR);

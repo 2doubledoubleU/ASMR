@@ -35,10 +35,10 @@ try:
 	db = db_connection.cursor()
 	db.execute('CREATE TABLE IF NOT EXISTS article_entries (uid TEXT, title TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
 	db.execute('CREATE TABLE IF NOT EXISTS article_read_entries (uid TEXT, title TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
-	db.execute('CREATE TABLE IF NOT EXISTS feeds (feed_name TEXT, category TEXT, feed TEXT, feed_id INTEGER, valid INTEGER)')
+	db.execute('CREATE TABLE IF NOT EXISTS feeds (feed_name TEXT, category TEXT, feed TEXT, feed_id INTEGER PRIMARY KEY, valid INTEGER)')
 	db_connection.commit()
-except:
-	error_print('An unexpected error occured while checking for tables in the DB. This program will now exit.')
+except Exception as e:
+	error_print('An unexpected error occured while checking for tables in the DB. This program will now exit. - ' + traceback.format_exc())
 	exit(1)
 
 def get_image(source): 
