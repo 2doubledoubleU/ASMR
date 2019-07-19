@@ -33,8 +33,8 @@ except:
 
 try:
 	db = db_connection.cursor()
-	db.execute('CREATE TABLE IF NOT EXISTS article_entries (uid TEXT, title TEXT, category TEXT, feed TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
-	db.execute('CREATE TABLE IF NOT EXISTS article_read_entries (uid TEXT, title TEXT, category TEXT, feed TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
+	db.execute('CREATE TABLE IF NOT EXISTS article_entries (uid TEXT, title TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
+	db.execute('CREATE TABLE IF NOT EXISTS article_read_entries (uid TEXT, title TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
 	db.execute('CREATE TABLE IF NOT EXISTS feeds (feed_name TEXT, category TEXT, feed TEXT, feed_id INTEGER, valid INTEGER)')
 	db_connection.commit()
 except:
@@ -97,7 +97,7 @@ def feeder(feed):
 			if (not db.fetchone()[0]) and ('link' in article):
 				image_link = get_image(article)
 				times = get_time(article)
-				arrm.append((article_id,article['title'],feed[1],feed[0],article['link'],image_link,times,0,feed[3]))
+				arrm.append((article_id,article['title'],article['link'],image_link,times,0,feed[3]))
 		return arrm 		
 
 	except KeyboardInterrupt:
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 			po = [x for x in po if x]
 			po = list(itertools.chain(*po))
 
-			db.executemany('INSERT into article_entries VALUES (?,?,?,?,?,?,?,?,?)',po)
+			db.executemany('INSERT into article_entries VALUES (?,?,?,?,?,?,?)',po)
 			db_connection.commit()
 			
 			db.execute('DELETE from article_entries where feed_id in (SELECT feed_id from feeds where VALID=0)')

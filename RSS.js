@@ -72,7 +72,7 @@ function articleRead(evt) {
 }
 
 function tileCreate(x) {
-  x.forEach(({title,feed,link,image,added,read}) => {
+  x.forEach(({title,feed_name,link,image,added,read}) => { ///////////////////////////////////////////////////////////////////////////////////////
     const Article = document.createElement("div")
     Article.className = "article"
     Article.style.opacity = 1 - read*0.75;
@@ -91,7 +91,7 @@ function tileCreate(x) {
     const titleText = document.createTextNode(title)
     const Feed = document.createElement("div") 
     Feed.className = "article_feed"
-    const feedText = document.createTextNode(feed)
+    const feedText = document.createTextNode(feed_name)
     const Time = document.createElement("div") 
     Time.className = "article_time"
     const timeText = document.createTextNode(timeSince(added))
@@ -137,11 +137,11 @@ function populateMenus() {
     document.getElementById("top_bar").appendChild(MenuLink)
   })
 
-  subMenus.forEach(({feed,category}) => {
+  subMenus.forEach(({feed_name,category}) => {
     const subMenuLink = document.createElement("a")
     subMenuLink.category = category
-    subMenuLink.feed = feed
-    const subMenuText = document.createTextNode(feed)
+    subMenuLink.feed = feed_name
+    const subMenuText = document.createTextNode(feed_name)
     subMenuLink.appendChild(subMenuText)
     document.getElementById(category).appendChild(subMenuLink) 
   })
