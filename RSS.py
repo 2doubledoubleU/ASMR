@@ -13,13 +13,16 @@ from datetime import datetime
 import html
 import multiprocessing
 from urllib.request import pathname2url
+import socket
 
 db_file = 'RSS.sqlite'
+
+socket.setdefaulttimeout(10)
 
 def error_print(string):
 	print(string)
 	with open('error.txt', 'a') as file:
-		file.write('[' + time.asctime( time.localtime(time.time())) + '] - ' + string + '\n')
+		file.write('[' + time.asctime(time.localtime(time.time())) + '] - ' + string + '\n')
 
 try:
     dburi = 'file:{}?mode=rw'.format(pathname2url(db_file))
