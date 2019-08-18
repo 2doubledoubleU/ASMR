@@ -13,13 +13,16 @@ from datetime import datetime
 import html
 import multiprocessing
 from urllib.request import pathname2url
+import socket
 
 db_file = 'RSS.sqlite'
+
+socket.setdefaulttimeout(10)
 
 def error_print(string):
 	print(string)
 	with open('error.txt', 'a') as file:
-		file.write('[' + time.asctime( time.localtime(time.time())) + '] - ' + string + '\n')
+		file.write('[' + time.asctime(time.localtime(time.time())) + '] - ' + string + '\n')
 
 try:
     dburi = 'file:{}?mode=rw'.format(pathname2url(db_file))
@@ -33,12 +36,12 @@ except:
 
 try:
 	db = db_connection.cursor()
-	db.execute('CREATE TABLE IF NOT EXISTS article_entries (uid TEXT, title TEXT, category TEXT, feed TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
-	db.execute('CREATE TABLE IF NOT EXISTS article_read_entries (uid TEXT, title TEXT, category TEXT, feed TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
-	db.execute('CREATE TABLE IF NOT EXISTS feeds (feed_name TEXT, category TEXT, feed TEXT, feed_id INTEGER, valid INTEGER)')
+	db.execute('CREATE TABLE IF NOT EXISTS article_entries (uid TEXT, title TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
+	db.execute('CREATE TABLE IF NOT EXISTS article_read_entries (uid TEXT, title TEXT, link TEXT, image TEXT, added TEXT, read INTEGER, feed_id INTEGER)')
+	db.execute('CREATE TABLE IF NOT EXISTS feeds (feed_name TEXT, category TEXT, feed TEXT, feed_id INTEGER PRIMARY KEY, valid INTEGER)')
 	db_connection.commit()
-except:
-	error_print('An unexpected error occured while checking for tables in the DB. This program will now exit.')
+except Exception as e:
+	error_print('An unexpected error occured while checking for tables in the DB. This program will now exit. - ' + traceback.format_exc())
 	exit(1)
 
 def get_image(source): 
@@ -97,7 +100,7 @@ def feeder(feed):
 			if (not db.fetchone()[0]) and ('link' in article):
 				image_link = get_image(article)
 				times = get_time(article)
-				arrm.append((article_id,article['title'],feed[1],feed[0],article['link'],image_link,times,0,feed[3]))
+				arrm.append((article_id,article['title'],article['link'],image_link,times,0,feed[3]))
 		return arrm 		
 
 	except KeyboardInterrupt:
@@ -116,7 +119,7 @@ if __name__ == '__main__':
 			po = [x for x in po if x]
 			po = list(itertools.chain(*po))
 
-			db.executemany('INSERT into article_entries VALUES (?,?,?,?,?,?,?,?,?)',po)
+			db.executemany('INSERT into article_entries VALUES (?,?,?,?,?,?,?)',po)
 			db_connection.commit()
 			
 			db.execute('DELETE from article_entries where feed_id in (SELECT feed_id from feeds where VALID=0)')
