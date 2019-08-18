@@ -284,4 +284,9 @@ function showMod() {
 
 document.getElementById("popup_display").addEventListener('mouseup', () => editor(event))
 
+document.getElementById("mark_read").addEventListener('mouseup', () => sectionRead())
+document.getElementById("toggle").addEventListener('click', () => toggler())
+document.getElementById("edit_feed").addEventListener('mouseup', () => modder())
+document.getElementById("updater").addEventListener('mouseup', () => updater())
+
 var t=setInterval(checker,10000);
